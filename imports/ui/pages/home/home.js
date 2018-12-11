@@ -5,6 +5,7 @@ import { FormProgress } from '/imports/api/form-progress/form-progress'
 import { UserQuestions } from '/imports/api/userQuestions/userQuestions'
 
 import moment from 'moment'
+import { redirectToUserInfoIfNeeded } from '../../redirectionModalHelper';
 
 Template.App_home.onCreated(function() {
   	this.autorun(() => {
@@ -16,6 +17,7 @@ Template.App_home.onCreated(function() {
     	if (Meteor.user() && Meteor.user().moderator){
       		FlowRouter.go('/moderator/applications')
     	}
+		redirectToUserInfoIfNeeded(this);
   	})
 })
 

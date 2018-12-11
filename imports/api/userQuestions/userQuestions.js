@@ -8,6 +8,11 @@ SimpleSchema.extendOptions(['autoform'])
 const UserQuestions = new Mongo.Collection('userQuestions')
 
 if (Meteor.isServer) {
+
+    Meteor.publish('userQuestions', function () {
+        return UserQuestions.find({});
+    });
+
     Meteor.publish('userQuestions', function (userInfoID) {
         return UserQuestions.find({ '_id' : userInfoID });
     });
@@ -113,6 +118,8 @@ UserQuestions.schema = new SimpleSchema({
         type: String,
         label: 'Author',
         autoValue: function() {
+            if (!this.isSet) return
+
             return this.userId || 'Test author'
         },
         autoform: {
@@ -122,7 +129,11 @@ UserQuestions.schema = new SimpleSchema({
     createdAt: {
         type: Number,
         label: 'Created At',
-        autoValue: () => new Date().getTime(),
+        autoValue: function() {
+            if (!this.isSet) return
+
+            return new Date().getTime()
+        },
         autoform: {
             type: 'hidden'
         }
@@ -130,7 +141,11 @@ UserQuestions.schema = new SimpleSchema({
     updatedAt: {
         type: Number,
         label: 'Updated At',
-        autoValue: () => new Date().getTime(),
+        autoValue: function() {
+            if (!this.isSet) return
+
+            new Date().getTime()
+        },
         autoform: {
             type: 'hidden'
         }
